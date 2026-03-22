@@ -3,34 +3,45 @@ import unittest
 from pydantic import ValidationError
 
 from part_generator_api.models import ScrewRequest, WasherRequest
+from part_generator_api.models.requests import ISO_4762_DIAMETERS
 
 
 class TestScrewRequest(unittest.TestCase):
 
-    def test_valid_screw(self):
-        req = ScrewRequest(diameter=12.0, length=80.0)
+    def test_valid_standard_diameter(self):
+        req = ScrewRequest(diameter=12, length=80.0)
         self.assertEqual(req.diameter, 12.0)
         self.assertEqual(req.length, 80.0)
 
-    def test_zero_diameter_rejected(self):
+    def test_non_standard_diameter_rejected(self):
         with self.assertRaises(ValidationError):
-            ScrewRequest(diameter=0, length=80.0)
+            ScrewRequest(diameter=7, length=80.0)
 
-    def test_negative_diameter_rejected(self):
+    def test_non_standard_float_rejected(self):
         with self.assertRaises(ValidationError):
-            ScrewRequest(diameter=-5.0, length=80.0)
+            ScrewRequest(diameter=11.5, length=80.0)
+
+    def test_error_message_mentions_iso(self):
+        with self.assertRaises(ValidationError) as ctx:
+            ScrewRequest(diameter=7, length=80.0)
+        self.assertIn("ISO 4762", str(ctx.exception))
+
+    def test_all_standard_sizes_accepted(self):
+        for d in ISO_4762_DIAMETERS:
+            req = ScrewRequest(diameter=d, length=50.0)
+            self.assertEqual(req.diameter, float(d))
 
     def test_negative_length_rejected(self):
         with self.assertRaises(ValidationError):
-            ScrewRequest(diameter=12.0, length=-1.0)
+            ScrewRequest(diameter=12, length=-1.0)
 
     def test_zero_length_rejected(self):
         with self.assertRaises(ValidationError):
-            ScrewRequest(diameter=12.0, length=0)
+            ScrewRequest(diameter=12, length=0)
 
     def test_missing_field_rejected(self):
         with self.assertRaises(ValidationError):
-            ScrewRequest(diameter=12.0)
+            ScrewRequest(diameter=12)
 
 
 class TestWasherRequest(unittest.TestCase):
