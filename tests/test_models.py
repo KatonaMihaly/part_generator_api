@@ -39,6 +39,14 @@ class TestScrewRequest(unittest.TestCase):
         with self.assertRaises(ValidationError):
             ScrewRequest(diameter=12)
 
+    def test_length_at_upper_bound_accepted(self):
+        req = ScrewRequest(diameter=12, length=200.0)
+        self.assertEqual(req.length, 200.0)
+
+    def test_length_above_upper_bound_rejected(self):
+        with self.assertRaises(ValidationError):
+            ScrewRequest(diameter=12, length=200.1)
+
 
 class TestWasherRequest(unittest.TestCase):
 
@@ -91,6 +99,22 @@ class TestWasherRequest(unittest.TestCase):
     def test_missing_field_rejected_inner_diameter(self):
         with self.assertRaises(ValidationError):
             WasherRequest(outer_diameter=24.0, thickness=2.0)
+
+    def test_outer_diameter_at_upper_bound_accepted(self):
+        req = WasherRequest(inner_diameter=50.0, outer_diameter=100.0, thickness=2.0)
+        self.assertEqual(req.outer_diameter, 100.0)
+
+    def test_outer_diameter_above_upper_bound_rejected(self):
+        with self.assertRaises(ValidationError):
+            WasherRequest(inner_diameter=50.0, outer_diameter=100.1, thickness=2.0)
+
+    def test_thickness_at_upper_bound_accepted(self):
+        req = WasherRequest(inner_diameter=13.0, outer_diameter=24.0, thickness=50.0)
+        self.assertEqual(req.thickness, 50.0)
+
+    def test_thickness_above_upper_bound_rejected(self):
+        with self.assertRaises(ValidationError):
+            WasherRequest(inner_diameter=13.0, outer_diameter=24.0, thickness=50.1)
 
 
 if __name__ == "__main__":

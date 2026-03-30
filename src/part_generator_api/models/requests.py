@@ -29,7 +29,7 @@ class WasherRequest(BaseModel):
     """
     inner_diameter: float = Field(gt=0, le=100, description="mm")
     outer_diameter: float = Field(gt=0, le=100, description="mm")
-    thickness: float = Field(gt=0, le=100, description="mm")
+    thickness: float = Field(gt=0, le=50, description="mm")
 
     @model_validator(mode="after")
     def check_diameters(self):
