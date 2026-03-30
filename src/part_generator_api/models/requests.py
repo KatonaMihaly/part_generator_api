@@ -6,8 +6,11 @@ ISO_4762_DIAMETERS = [
 
 
 class ScrewRequest(BaseModel):
+    """
+    Data model for screw input. Also validates ISO 4762 diameters.
+    """
     diameter: float
-    length: float = Field(gt=0, description="mm")
+    length: float = Field(gt=0, le=200, description="mm")
 
     @field_validator("diameter")
     @classmethod
@@ -21,9 +24,12 @@ class ScrewRequest(BaseModel):
 
 
 class WasherRequest(BaseModel):
-    inner_diameter: float = Field(gt=0, description="mm")
-    outer_diameter: float = Field(gt=0, description="mm")
-    thickness: float = Field(gt=0, description="mm")
+    """
+    Data model for washer input. Also validates inner diameter < outer diameter.
+    """
+    inner_diameter: float = Field(gt=0, le=100, description="mm")
+    outer_diameter: float = Field(gt=0, le=100, description="mm")
+    thickness: float = Field(gt=0, le=100, description="mm")
 
     @model_validator(mode="after")
     def check_diameters(self):

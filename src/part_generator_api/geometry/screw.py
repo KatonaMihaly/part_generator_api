@@ -2,9 +2,8 @@ from build123d import Cylinder, Location, Shape
 
 from part_generator_api.geometry.base import BaseGeometry
 
-# ISO 4762:2004 / DIN 912 — Socket Head Cap Screw nominal dimensions
-# Format: nominal_diameter_d → (head_diameter_dk, head_height_k)  [mm]
-# Source: ISO 4762:2004 Table 1, nominal (max) values
+# ISO 4762:2004 / DIN 912 - Socket Head Cap Screw nominal dimensions
+# Format: nominal_diameter_d: (head_diameter_dk, head_height_k) [mm]
 ISO_4762_HEAD = {
     1.6: (3.00,  1.60),
     2:   (3.80,  2.00),
@@ -28,18 +27,23 @@ ISO_4762_HEAD = {
     42:  (63.00, 42.00),
     48:  (72.00, 48.00),
     56:  (84.00, 56.00),
-    64:  (96.00, 64.00),
+    64:  (96.00, 64.00)
 }
 
 
 class ScrewGenerator(BaseGeometry):
-    """FEM-simplified socket head cap screw (ISO 4762)."""
+    """
+    FEM-optimised (no champfer, no thread) socket head cap screw.
+    """
 
     def __init__(self, diameter, length):
         self.diameter = diameter
         self.length = length
 
     def generate(self):
+        """
+        Ensured that the anchor point is on the bottom face centerpoint of the shank.
+        """
         dk, k = ISO_4762_HEAD[self.diameter]
         shank = Cylinder(radius=self.diameter / 2, height=self.length).locate(
             Location((0, 0, self.length / 2))

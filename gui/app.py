@@ -12,6 +12,9 @@ API_URL = os.getenv("API_URL")
 
 
 def generate(endpoint, payload, filename, key):
+    """
+    Handles API request and session state.
+    """
     with st.spinner("Generating..."):
         try:
             response = requests.post(f"{API_URL}{endpoint}", json=payload)
@@ -30,6 +33,9 @@ def generate(endpoint, payload, filename, key):
 
 
 def download_section(key):
+    """
+    Also feedback on generation.
+    """
     if st.session_state.get(f"{key}_generated"):
         st.success(f"Generated: {st.session_state[f'{key}_filename']}")
     if st.session_state.get(f"{key}_data"):
@@ -40,7 +46,7 @@ def download_section(key):
             mime="application/octet-stream",
         )
 
-
+# --- LAYOUT ---
 st.title("Part Generator")
 
 tab_screw, tab_washer = st.tabs(["Screw", "Washer"])

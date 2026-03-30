@@ -15,16 +15,12 @@ class TestScrewRequest(unittest.TestCase):
 
     def test_non_standard_diameter_rejected(self):
         with self.assertRaises(ValidationError):
-            ScrewRequest(diameter=7, length=80.0)
-
-    def test_non_standard_float_rejected(self):
-        with self.assertRaises(ValidationError):
-            ScrewRequest(diameter=11.5, length=80.0)
+            ScrewRequest(diameter=7.1, length=80.0)
 
     def test_error_message_mentions_iso(self):
-        with self.assertRaises(ValidationError) as ctx:
+        with self.assertRaises(ValidationError) as err:
             ScrewRequest(diameter=7, length=80.0)
-        self.assertIn("ISO 4762", str(ctx.exception))
+        self.assertIn("ISO 4762", str(err.exception))
 
     def test_all_standard_sizes_accepted(self):
         for d in ISO_4762_DIAMETERS:
@@ -84,9 +80,17 @@ class TestWasherRequest(unittest.TestCase):
         with self.assertRaises(ValidationError):
             WasherRequest(inner_diameter=30.0, outer_diameter=24.0, thickness=2.0)
 
-    def test_missing_field_rejected(self):
+    def test_missing_field_rejected_thickness(self):
         with self.assertRaises(ValidationError):
             WasherRequest(inner_diameter=13.0, outer_diameter=24.0)
+
+    def test_missing_field_rejected_outer_diameter(self):
+        with self.assertRaises(ValidationError):
+            WasherRequest(inner_diameter=30.0, thickness=2.0)
+
+    def test_missing_field_rejected_inner_diameter(self):
+        with self.assertRaises(ValidationError):
+            WasherRequest(outer_diameter=24.0, thickness=2.0)
 
 
 if __name__ == "__main__":
