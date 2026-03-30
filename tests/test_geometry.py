@@ -16,7 +16,9 @@ class TestScrewGenerator(unittest.TestCase):
         self.assertIn(b"ISO-10303-21", data[:100])
 
     def test_valid_bounding_box(self):
-        """Validates retrieval from ISO 4762 DICT"""
+        """
+        Validates retrieval from ISO 4762 DICT.
+        """
         generator = ScrewGenerator(12.0, 80.0)
         bb = generator.generate().bounding_box()
         self.assertAlmostEqual(bb.size.Z, 92.0, places=1)
@@ -35,6 +37,15 @@ class TestWasherGenerator(unittest.TestCase):
         data = generator.to_step_bytes()
         self.assertIn(b"ISO-10303-21", data[:100])
 
+    def test_valid_bounding_box(self):
+        """
+        Validates external diameter and heiht dimensions.
+        """
+        generator = WasherGenerator(10.0, 20.0, 2.0)
+        bb = generator.generate().bounding_box()
+        self.assertAlmostEqual(bb.size.Z, 2.0, places=1)
+        self.assertAlmostEqual(bb.size.X, 20.0, places=1)
+        self.assertAlmostEqual(bb.size.Y, 20.0, places=1)
 
 if __name__ == "__main__":
     unittest.main()

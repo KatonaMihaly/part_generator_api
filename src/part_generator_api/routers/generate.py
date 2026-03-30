@@ -8,7 +8,6 @@ from part_generator_api.models import ScrewRequest, WasherRequest
 
 router = APIRouter(prefix="/v1/generate", tags=["Generation"])
 
-
 @router.post("/screw")
 def generate_screw(params: ScrewRequest):
     generator = ScrewGenerator(diameter=params.diameter, length=params.length)

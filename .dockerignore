@@ -7,3 +7,4 @@ context/
 gui/
 snippet.py
 .env
+.claude/

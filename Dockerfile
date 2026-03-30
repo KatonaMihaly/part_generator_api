@@ -13,6 +13,9 @@ COPY src/ src/
 
 RUN uv pip install . --system
 
+RUN useradd --create-home --shell /bin/bash appuser
+USER appuser
+
 EXPOSE 8000
 
 CMD ["uvicorn", "part_generator_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
