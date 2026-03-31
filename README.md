@@ -93,6 +93,18 @@ The same principle applies to the anchor point: both generators place the coordi
 | Run without installing Python or dependencies | [Docker](#docker) |
 | Modify or contribute to the code | [Local development](#local-development) |
 
+### Prequisites (cold start)
+
+Windows:
+
+1) Clone/download the repository.
+2) Install Python (3.12<=, <3.14).
+3) Create a virtual environment and activate.
+4) Install uv: pip install uv
+--> local install or local development
+5) Install docker: visit https://www.docker.com/products/docker-desktop/
+6) 
+
 ### Local install
 
 Install the package and start the API from the project directory:
