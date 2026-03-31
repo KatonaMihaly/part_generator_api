@@ -1,8 +1,9 @@
 from pydantic import BaseModel, Field, field_validator, model_validator
+import json
+from importlib.resources import files
 
-ISO_4762_DIAMETERS = [
-    1.6, 2, 2.5, 3, 4, 5, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 27, 30, 36, 42, 48, 56, 64
-]
+_raw = json.loads(files("part_generator_api.data").joinpath("iso_4762.json").read_text())
+ISO_4762_DIAMETERS = {float(k) for k in _raw}
 
 
 class ScrewRequest(BaseModel):

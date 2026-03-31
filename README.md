@@ -93,6 +93,45 @@ The same principle applies to the anchor point: both generators place the coordi
 | Run without installing Python or dependencies | [Docker](#docker) |
 | Modify or contribute to the code | [Local development](#local-development) |
 
+### Prerequisites (cold start)
+
+**Linux:**
+
+1. Clone/download the repository.
+2. Install Python (>=3.12, <3.14) — via your package manager, the [deadsnakes PPA](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa), or [pyenv](https://github.com/pyenv/pyenv).
+3. Create and activate a virtual environment:
+   ```bash
+   python3.12 -m venv venv
+   source venv/bin/activate
+   ```
+4. Choose a path:
+   - **4a — Local install / development / GUI:** install uv:
+     ```bash
+     pip install uv
+     ```
+   - **4b — Docker:** install Docker via your distro's package manager or [Docker Desktop for Linux](https://www.docker.com/products/docker-desktop/).
+
+---
+
+**Windows:**
+
+1. Clone/download the repository.
+2. Install Python (>=3.12, <3.14).
+3. Create and activate a virtual environment:
+   ```cmd
+   py -3.12 -m venv venv --clear
+   venv\Scripts\activate.bat
+   ```
+4. Choose a path:
+   - **4a — Local install / development / GUI:** install uv:
+     ```cmd
+     pip install uv
+     ```
+   - **4b — Docker:** update WSL, then install [Docker Desktop](https://www.docker.com/products/docker-desktop/):
+     ```cmd
+     wsl --update --web-download
+     ```
+
 ### Local install
 
 Install the package and start the API from the project directory:
@@ -122,6 +161,24 @@ docker run -p 8000:8000 part-generator-api
 The container runs as a non-root user (`appuser`). The GUI is not included in the
 image; see [Streamlit GUI](#streamlit-gui-optional-local-only) below if you want it.
 
+Stop docker container:
+
+```bash
+docker stop container_ID
+```
+
+Delete docker container:
+
+```bash
+docker rm container_ID
+```
+
+Delete docker image:
+
+```bash
+docker rmi part-generator-api
+```
+
 ### Local development
 
 An editable install (`-e`) links the package directly to the `src/` directory so
@@ -133,9 +190,9 @@ uv pip install -e ".[dev]"
 uvicorn part_generator_api.main:app --reload
 ```
 
-The API is available at `http://localhost:8000`.
+The API is available at `http://localhost:8000`
 
-### Streamlit GUI (optional, local only)
+### Streamlit GUI (optional, local only, does not work with docker)
 
 Install GUI dependencies:
 
@@ -167,6 +224,8 @@ the STEP file directly from the running API.
 No additional packages required — `curl` is pre-installed on Windows and most Linux
 distributions.
 
+Under windows single quotes does not work in cmd.
+
 ### Check health
 
 ```bash
@@ -175,16 +234,32 @@ curl http://localhost:8000/health
 
 ### Generate a screw
 
+Linux:
+
 ```bash
 curl -X POST http://localhost:8000/v1/generate/screw -H "Content-Type: application/json" -d '{"diameter": 12, "length": 80}' -OJ
+```
+
+Windows:
+
+```cmd
+curl -X POST http://localhost:8000/v1/generate/screw -H "Content-Type: application/json" -d "{\"diameter\": 12, \"length\": 80}" -OJ
 ```
 
 Saves `screw_M12.0x80.0.step` in the current directory.
 
 ### Generate a washer
 
+Linux:
+
 ```bash
 curl -X POST http://localhost:8000/v1/generate/washer -H "Content-Type: application/json" -d '{"inner_diameter": 13, "outer_diameter": 24, "thickness": 2}' -OJ
+```
+
+Windows:
+
+```cmd
+curl -X POST http://localhost:8000/v1/generate/washer -H "Content-Type: application/json" -d "{\"inner_diameter\": 13, \"outer_diameter\": 24, \"thickness\": 2}" -OJ
 ```
 
 Saves `washer_13.0x24.0x2.0.step` in the current directory.
