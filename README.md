@@ -42,6 +42,8 @@ A FastAPI service that generates FEM-simplified STEP files for screws and flat w
 └──────────────────────────────────────────────────────────────┘
 ```
 
+Preview generated STEP files at [https://3dviewer.net](https://3dviewer.net).
+
 ### Source layout
 
 ```
