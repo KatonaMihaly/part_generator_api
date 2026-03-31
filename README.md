@@ -100,10 +100,13 @@ Windows:
 1) Clone/download the repository.
 2) Install Python (3.12<=, <3.14).
 3) Create a virtual environment and activate.
-4) Install uv: pip install uv
+py -3.12 -m venv venv --clear
+venv\Scripts\activate.bat
+4a) Install uv: pip install uv
 --> local install or local development
-5) Install docker: visit https://www.docker.com/products/docker-desktop/
-6) 
+4b) Update Windows Subsystem for Linux (WSL): wsl --update --web-download
+  1) Install docker: visit https://www.docker.com/products/docker-desktop/
+  2)   
 
 ### Local install
 
@@ -134,6 +137,24 @@ docker run -p 8000:8000 part-generator-api
 The container runs as a non-root user (`appuser`). The GUI is not included in the
 image; see [Streamlit GUI](#streamlit-gui-optional-local-only) below if you want it.
 
+Stop docker container:
+
+```bash
+docker stop part-generator-api .
+```
+
+Delete docker container:
+
+```bash
+docker rm part-generator-api / (or container ID)
+```
+
+Delete image container:
+
+```bash
+docker rmi part-generator-api
+```
+
 ### Local development
 
 An editable install (`-e`) links the package directly to the `src/` directory so
@@ -145,9 +166,9 @@ uv pip install -e ".[dev]"
 uvicorn part_generator_api.main:app --reload
 ```
 
-The API is available at `http://localhost:8000`.
+The API is available at `http://localhost:8000
 
-### Streamlit GUI (optional, local only)
+### Streamlit GUI (optional, local only, does not work with docker)
 
 Install GUI dependencies:
 
@@ -179,6 +200,8 @@ the STEP file directly from the running API.
 No additional packages required — `curl` is pre-installed on Windows and most Linux
 distributions.
 
+Under windows single quotes does not work in cmd.
+
 ### Check health
 
 ```bash
@@ -187,16 +210,32 @@ curl http://localhost:8000/health
 
 ### Generate a screw
 
+Linux:
+
 ```bash
 curl -X POST http://localhost:8000/v1/generate/screw -H "Content-Type: application/json" -d '{"diameter": 12, "length": 80}' -OJ
+```
+
+Windows:
+
+```bash
+curl -X POST http://localhost:8000/v1/generate/washer -H "Content-Type: application/json" -d "{\"inner_diameter\": 13, \"outer_diameter\": 24, \"thickness\": 2}" -OJ
 ```
 
 Saves `screw_M12.0x80.0.step` in the current directory.
 
 ### Generate a washer
 
+Linux:
+
 ```bash
 curl -X POST http://localhost:8000/v1/generate/washer -H "Content-Type: application/json" -d '{"inner_diameter": 13, "outer_diameter": 24, "thickness": 2}' -OJ
+```
+
+Windows:
+
+```bash
+curl -X POST http://localhost:8000/v1/generate/washer -H "Content-Type: application/json" -d "{\"inner_diameter\": 13, \"outer_diameter\": 24, \"thickness\": 2}" -OJ
 ```
 
 Saves `washer_13.0x24.0x2.0.step` in the current directory.
