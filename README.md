@@ -111,6 +111,12 @@ The same principle applies to the anchor point: both generators place the coordi
      ```
    - **4b — Docker:** install Docker via your distro's package manager or [Docker Desktop for Linux](https://www.docker.com/products/docker-desktop/).
 
+build123d depends on OpenCascade, which requires several system libraries that may not be present on a minimal Linux install. Install them before running the API if missing:
+
+```bash
+apt-get update && apt-get install -y libgl1 libglib2.0-0 libx11-6 libxext6 libxrender1 libsm6
+```
+
 ---
 
 **Windows:**
