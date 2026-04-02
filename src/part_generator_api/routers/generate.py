@@ -12,7 +12,7 @@ router = APIRouter(prefix="/v1/generate", tags=["Generation"])
 def generate_screw(params: ScrewRequest):
     generator = ScrewGenerator(diameter=params.diameter, length=params.length)
     step_bytes = generator.to_step_bytes()
-    filename = f"screw_M{params.diameter}x{params.length}.step"
+    filename = f"screw_M{params.diameter:g}x{params.length:g}.step"
     return StreamingResponse(
         BytesIO(step_bytes),
         media_type="application/STEP",
@@ -28,7 +28,7 @@ def generate_washer(params: WasherRequest):
         thickness=params.thickness,
     )
     step_bytes = generator.to_step_bytes()
-    filename = f"washer_{params.inner_diameter}x{params.outer_diameter}x{params.thickness}.step"
+    filename = f"washer_{params.inner_diameter:g}x{params.outer_diameter:g}x{params.thickness:g}.step"
     return StreamingResponse(
         BytesIO(step_bytes),
         media_type="application/STEP",

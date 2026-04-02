@@ -1,11 +1,11 @@
-from build123d import Cylinder, Location, Shape
+from build123d import Cylinder, Location
 
 from part_generator_api.geometry.base import BaseGeometry
 
 
 class WasherGenerator(BaseGeometry):
     """
-    FEM-optimised (no champfer) washer.
+    FEM-optimised (no chamfer) washer.
     """
     def __init__(self, inner_diameter, outer_diameter, thickness):
         self.inner_diameter = inner_diameter
@@ -14,7 +14,7 @@ class WasherGenerator(BaseGeometry):
 
     def generate(self):
         """
-        Ensured that the anchor point is on the bottom face centerpoint of the washer.
+        Ensures that the anchor point is on the bottom face centerpoint of the washer.
         """
         outer = Cylinder(radius=self.outer_diameter / 2, height=self.thickness).locate(
             Location((0, 0, self.thickness / 2))

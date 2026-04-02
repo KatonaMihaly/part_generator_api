@@ -10,7 +10,7 @@ class ScrewRequest(BaseModel):
     """
     Data model for screw input. Also validates ISO 4762 diameters.
     """
-    diameter: float
+    diameter: float = Field(description="mm")
     length: float = Field(gt=0, le=200, description="mm")
 
     @field_validator("diameter")

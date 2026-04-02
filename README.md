@@ -387,9 +387,9 @@ With the server running, FastAPI's auto-generated docs are available at:
 |---------------------------|-------------|-------|-----------------|
 | `tests/test_models.py`    | Unit        | 25    | Pydantic validation: all 23 ISO 4762 diameters accepted; non-standard diameter, negative/zero values, inverted diameters, missing fields, and values above upper bounds all raise `ValidationError` with correct messages. |
 | `tests/test_geometry.py`  | Unit        | 6     | build123d output: STEP bytes non-empty, `ISO-10303-21` header present in first 100 bytes, bounding-box dimensions match expected ISO 4762 nominal values. |
-| `tests/test_endpoints.py` | Integration | 11    | Full HTTP round-trip via FastAPI `TestClient`: HTTP 200 on valid input; `Content-Type: application/STEP`; `ISO-10303-21` in response body; `Content-Disposition` filename correct; HTTP 422 on invalid and missing parameters. |
+| `tests/test_endpoints.py` | Integration | 12    | Full HTTP round-trip via FastAPI `TestClient`: HTTP 200 on valid input; `Content-Type: application/STEP`; `ISO-10303-21` in response body; `Content-Disposition` filename correct; HTTP 422 on invalid and missing parameters. |
 | `tests/test_health.py`    | Integration | 1     | Health endpoint returns HTTP 200 and `{"status": "ok"}`. |
-| **Total**                 |             | **43**|                 |
+| **Total**                 |             | **44**|                 |
 
 ### How to run
 

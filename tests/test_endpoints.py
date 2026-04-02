@@ -32,7 +32,7 @@ class TestGenerateScrew(unittest.TestCase):
         response = self.client.post(
             "/v1/generate/screw", json={"diameter": 12.0, "length": 80.0}
         )
-        self.assertIn("screw_M12.0x80.0.step", response.headers["content-disposition"])
+        self.assertIn("screw_M12x80.step", response.headers["content-disposition"])
 
     def test_generate_screw_invalid_params_422(self):
         response = self.client.post(
@@ -72,6 +72,13 @@ class TestGenerateWasher(unittest.TestCase):
             json={"inner_diameter": 13.0, "outer_diameter": 24.0, "thickness": 2.0},
         )
         self.assertIn(b"ISO-10303-21", response.content[:100])
+
+    def test_generate_washer_filename_header(self):
+        response = self.client.post(
+            "/v1/generate/washer",
+            json={"inner_diameter": 13.0, "outer_diameter": 24.0, "thickness": 2.0},
+        )
+        self.assertIn("washer_13x24x2.step", response.headers["content-disposition"])
 
     def test_generate_washer_invalid_params_422(self):
         response = self.client.post(

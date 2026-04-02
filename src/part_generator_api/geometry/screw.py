@@ -13,7 +13,7 @@ ISO_4762_HEAD = {float(k): v for k, v in _raw.items()}
 
 class ScrewGenerator(BaseGeometry):
     """
-    FEM-optimised (no champfer, no thread) socket head cap screw.
+    FEM-optimised (no chamfer, no thread) socket head cap screw.
     """
 
     def __init__(self, diameter, length):
@@ -22,7 +22,7 @@ class ScrewGenerator(BaseGeometry):
 
     def generate(self):
         """
-        Ensured that the anchor point is on the bottom face centerpoint of the shank.
+        Ensures that the anchor point is on the bottom face centerpoint of the shank.
         """
         entry = ISO_4762_HEAD[self.diameter]
         dk, k = entry["dk"], entry["k"]
